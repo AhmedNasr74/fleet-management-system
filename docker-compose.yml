@@ -1,0 +1,50 @@
+version: '3'
+
+
+networks:
+  robusta:
+
+
+services:
+  nginx:
+    image: library/nginx:stable-alpine
+    container_name: nginx-robusta
+    volumes:
+      - ./src/bus-booking:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - robusta
+
+  mysql:
+    image: library/mysql:latest
+    container_name: mysql-robusta
+    restart: unless-stopped
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    networks:
+      - robusta
+
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-robusta
+    volumes:
+      - ./src/bus-booking:/var/www/html
+    ports:
+      - "9000:9000"
+    networks:
+      - robusta
