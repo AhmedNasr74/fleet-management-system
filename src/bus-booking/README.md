@@ -3,7 +3,7 @@
 The goal of this project is to implement a building a fleet-management system (bus-booking system) using the latest version of the Laravel Framework
 
 ## Project Environment
-    copy .env.example to env file
+    copy .env.example to .env file
     set the following Database Criedentials according to your Decker Config
     For Example:
         DB_CONNECTION=mysql
@@ -25,4 +25,5 @@ The goal of this project is to implement a building a fleet-management system (b
 - [x] Request Validation
 - [x] Custom Services
 - [x] Custom Laravel Commands
+- [x] Usage of PHP traits
 - [x] Unit Testing

@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests\Trip;
 
+use App\Traits\RequestValidationErrorsResponse;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShowAvailableSeatsRequest extends FormRequest
 {
+    use RequestValidationErrorsResponse;
+
     public function rules(): array
     {
         return [

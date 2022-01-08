@@ -30,7 +30,7 @@ class TripsController extends Controller
         return $this->apiResponseService->send(new TripResource($trip), 'Trip Details');
     }
 
-    public function showAvailableSeats(ShowAvailableSeatsRequest $request, AvailableSeatsForBooking $service)
+    public function showAvailableSeats(ShowAvailableSeatsRequest $request, AvailableSeatsForBooking $service): JsonResponse
     {
         $seats = $service->all($request->start_station_id, $request->end_station_id, $request->trip_id);
         return $this->apiResponseService->send(['available_seats_count' => count($seats) ,'seats_numbers'=> $seats]);
@@ -38,18 +38,11 @@ class TripsController extends Controller
 
     public function bookSeat(BookSeatRequest $request, AvailableSeatsForBooking $service): JsonResponse
     {
-        if (!$service->check($request->start_station_id, $request->end_station_id, $request->trip_id,$request->seat_id)){
+        if (!$service->check($request->from, $request->to, $request->trip_id,$request->seat_id)) {
             return $this->apiResponseService->sendMessage('Sorry, This seat is booked for this trip slot pick anther seat', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $trip = Trip::find($request->trip_id);
-        $booking = TripBooking::create([
-            'trip_id' => $trip->id,
-            'bus_id' => $trip->bus_id,
-            'from' => $request->start_station_id,
-            'to' => $request->end_station_id,
-            'seat_id' => $request->seat_id,
-            'user_id' => auth()->id(),
-        ]);
+
+        $booking = TripBooking::create($request->getSanitized());
         return  $this->apiResponseService->send(new TripBookingResource($booking) , 'Congratulations!, Your seat is booked');
     }
 }

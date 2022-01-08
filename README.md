@@ -13,6 +13,9 @@ Fleet Management System (Bus Booking)
 ## For App Installation
 * docker-compose exec php php /var/www/html/artisan app:install
 
+* ## Unit Testing
+* docker-compose exec php php /var/www/html/artisan test
+
 ## Postman
 - [Documentation](https://documenter.getpostman.com/view/7380837/UVXerHpP)
 - [Collection](https://www.getpostman.com/collections/d448e0b5dec2c7178c26)
